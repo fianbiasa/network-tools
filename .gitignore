@@ -1,0 +1,49 @@
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Dependency directories
+node_modules/
+vendor/
+
+# Optional cache directories
+.cache/
+.tmp/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Build outputs
+dist/
+build/
+
+# Backup files
+*.bak
+*.backup
+*.old
