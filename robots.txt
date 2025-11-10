@@ -1,0 +1,31 @@
+# Robots.txt for JowHost Network Tools
+# https://tools.jowhost.com/robots.txt
+
+User-agent: *
+Allow: /
+Disallow: /api.php
+Disallow: /.htaccess
+Disallow: /error_log
+
+# Crawl-delay untuk bot tertentu
+User-agent: Googlebot
+Crawl-delay: 0
+
+User-agent: Bingbot
+Crawl-delay: 1
+
+User-agent: Slurp
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+# Sitemap location
+Sitemap: https://tools.jowhost.com/sitemap.xml
