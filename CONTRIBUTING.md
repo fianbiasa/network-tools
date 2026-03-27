@@ -194,7 +194,7 @@ Kontributor akan:
 - [DNS Record Types](https://en.wikipedia.org/wiki/List_of_DNS_record_types)
 
 ### Tools
-- [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer)
+- [PHP CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer)
 - [ESLint](https://eslint.org/)
 - [Postman](https://www.postman.com/) untuk testing API
 
