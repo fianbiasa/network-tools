@@ -22,7 +22,8 @@ function cleanDomain($domain) {
     return $domain;
 }
 
-if (empty($query)) {
+// Validasi query kecuali untuk SMTP yang punya parameter sendiri
+if (empty($query) && $action !== 'smtp') {
     respond(false, [], 'Please provide a domain or IP address');
 }
 
@@ -717,6 +718,144 @@ switch ($action) {
         }
         
         respond(true, $result, '', "IP Information for {$ip}");
+        break;
+
+    // SMTP Test
+    case 'smtp':
+        $hostname = $_POST['hostname'] ?? '';
+        $port = $_POST['port'] ?? 587;
+        $secure = $_POST['secure'] ?? 'tls';
+        $auth = $_POST['auth'] ?? 'yes';
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
+        $from = $_POST['from'] ?? '';
+        $to = $_POST['to'] ?? '';
+        
+        if (empty($hostname) || empty($from) || empty($to)) {
+            respond(false, [], 'Hostname, From, and To email are required');
+        }
+        
+        $result = [];
+        $errors = [];
+        
+        // Test SMTP connection
+        try {
+            $result[] = ['label' => 'Server', 'value' => $hostname];
+            $result[] = ['label' => 'Port', 'value' => $port];
+            $result[] = ['label' => 'Security', 'value' => strtoupper($secure)];
+            
+            // Try to connect
+            $errno = 0;
+            $errstr = '';
+            
+            if ($secure === 'ssl') {
+                $socket = @fsockopen("ssl://{$hostname}", $port, $errno, $errstr, 10);
+            } else {
+                $socket = @fsockopen($hostname, $port, $errno, $errstr, 10);
+            }
+            
+            if (!$socket) {
+                respond(false, [], "Failed to connect: {$errstr} ({$errno})");
+            }
+            
+            $result[] = ['label' => 'Connection', 'value' => '✅ Connected successfully'];
+            
+            // Read server greeting
+            $response = fgets($socket, 515);
+            $result[] = ['label' => 'Server Greeting', 'value' => trim($response)];
+            
+            // Send EHLO
+            fputs($socket, "EHLO {$hostname}\r\n");
+            $response = '';
+            while ($str = fgets($socket, 515)) {
+                $response .= $str;
+                if (substr($str, 3, 1) === ' ') break;
+            }
+            $result[] = ['label' => 'EHLO Response', 'value' => trim($response)];
+            
+            // Start TLS if needed
+            if ($secure === 'tls') {
+                fputs($socket, "STARTTLS\r\n");
+                $response = fgets($socket, 515);
+                $result[] = ['label' => 'STARTTLS', 'value' => trim($response)];
+                
+                if (strpos($response, '220') === 0) {
+                    stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT);
+                    fputs($socket, "EHLO {$hostname}\r\n");
+                    while ($str = fgets($socket, 515)) {
+                        if (substr($str, 3, 1) === ' ') break;
+                    }
+                }
+            }
+            
+            // Authentication
+            if ($auth === 'yes' && !empty($username) && !empty($password)) {
+                fputs($socket, "AUTH LOGIN\r\n");
+                $response = fgets($socket, 515);
+                
+                fputs($socket, base64_encode($username) . "\r\n");
+                $response = fgets($socket, 515);
+                
+                fputs($socket, base64_encode($password) . "\r\n");
+                $response = fgets($socket, 515);
+                
+                if (strpos($response, '235') === 0) {
+                    $result[] = ['label' => 'Authentication', 'value' => '✅ Authenticated successfully'];
+                } else {
+                    $result[] = ['label' => 'Authentication', 'value' => '❌ Authentication failed: ' . trim($response)];
+                    fclose($socket);
+                    respond(true, $result, 'Connection successful but authentication failed', 'SMTP Test Results');
+                }
+            } else {
+                $result[] = ['label' => 'Authentication', 'value' => 'Skipped (No auth)'];
+            }
+            
+            // Send test email
+            fputs($socket, "MAIL FROM: <{$from}>\r\n");
+            $response = fgets($socket, 515);
+            $result[] = ['label' => 'MAIL FROM', 'value' => trim($response)];
+            
+            fputs($socket, "RCPT TO: <{$to}>\r\n");
+            $response = fgets($socket, 515);
+            $result[] = ['label' => 'RCPT TO', 'value' => trim($response)];
+            
+            fputs($socket, "DATA\r\n");
+            $response = fgets($socket, 515);
+            
+            $message = "Subject: SMTP Test dari JowHost.com\r\n";
+            $message .= "From: {$from}\r\n";
+            $message .= "To: {$to}\r\n";
+            $message .= "Content-Type: text/plain; charset=utf-8\r\n";
+            $message .= "\r\n";
+            $message .= "Hai, selamat pengiriman pesan berhasil dari:\r\n\r\n";
+            $message .= "Hostname: {$hostname}\r\n";
+            $message .= "Port: {$port}\r\n";
+            $message .= "Security: " . strtoupper($secure) . "\r\n";
+            $message .= "Authentication: " . ($auth === 'yes' ? 'Yes' : 'No') . "\r\n";
+            $message .= "From: {$from}\r\n";
+            $message .= "To: {$to}\r\n";
+            $message .= "\r\nBy jowhost.com\r\n";
+            $message .= ".\r\n";
+            
+            fputs($socket, $message);
+            $response = fgets($socket, 515);
+            $result[] = ['label' => 'Send Status', 'value' => trim($response)];
+            
+            if (strpos($response, '250') === 0) {
+                $result[] = ['label' => 'Email Test', 'value' => '✅ Test email sent successfully!'];
+            } else {
+                $result[] = ['label' => 'Email Test', 'value' => '⚠️ Email may not have been sent'];
+            }
+            
+            // Close connection
+            fputs($socket, "QUIT\r\n");
+            fclose($socket);
+            
+            respond(true, $result, 'SMTP test completed successfully', 'SMTP Test Results');
+            
+        } catch (Exception $e) {
+            respond(false, [], 'Error: ' . $e->getMessage());
+        }
         break;
 
     default:

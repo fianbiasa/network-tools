@@ -7,8 +7,8 @@
     <!-- Primary Meta Tags -->
     <title>Free Network Tools - DNS Lookup, WHOIS, SSL Checker | JowHost Tools</title>
     <meta name="title" content="Free Network Tools - DNS Lookup, WHOIS, SSL Checker | JowHost Tools">
-    <meta name="description" content="Gratis! 25+ network diagnostic tools untuk DNS lookup (A, MX, NS, CNAME), WHOIS, SSL certificate checker, email security (SPF, DKIM, DMARC), IP info, ping test, dan port scanner. Real-time & accurate results.">
-    <meta name="keywords" content="dns lookup, whois lookup, ssl checker, mx record checker, dns tools, network tools, ip lookup, domain checker, spf checker, dkim checker, dmarc checker, ping test, port scanner, free dns tools, website tools">
+    <meta name="description" content="Gratis! 26+ network diagnostic tools untuk DNS lookup (A, MX, NS, CNAME), WHOIS, SSL certificate checker, email security (SPF, DKIM, DMARC), SMTP test, IP info, ping test, dan port scanner. Real-time & accurate results.">
+    <meta name="keywords" content="dns lookup, whois lookup, ssl checker, mx record checker, dns tools, network tools, ip lookup, domain checker, spf checker, dkim checker, dmarc checker, smtp test, smtp checker, ping test, port scanner, free dns tools, website tools, email tools">
     <meta name="robots" content="index, follow">
     <meta name="language" content="Indonesian">
     <meta name="author" content="JowHost">
@@ -21,7 +21,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tools.jowhost.com/">
     <meta property="og:title" content="Free Network Tools - DNS Lookup, WHOIS, SSL Checker | JowHost">
-    <meta property="og:description" content="25+ free network diagnostic tools: DNS lookup, WHOIS, SSL checker, email security validation, and more. Fast, accurate, real-time results.">
+    <meta property="og:description" content="26+ free network diagnostic tools: DNS lookup, WHOIS, SSL checker, SMTP test, email security validation, and more. Fast, accurate, real-time results.">
     <meta property="og:image" content="https://tools.jowhost.com/og-image.jpg">
     <meta property="og:site_name" content="JowHost Network Tools">
     <meta property="og:locale" content="id_ID">
@@ -30,7 +30,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://tools.jowhost.com/">
     <meta name="twitter:title" content="Free Network Tools - DNS, WHOIS, SSL Checker">
-    <meta name="twitter:description" content="25+ free network diagnostic tools with real-time results. DNS lookup, WHOIS, SSL checker, and more.">
+    <meta name="twitter:description" content="26+ free network diagnostic tools with real-time results. DNS lookup, WHOIS, SSL checker, SMTP test, and more.">
     <meta name="twitter:image" content="https://tools.jowhost.com/twitter-card.jpg">
     
     <!-- Favicon -->
@@ -55,7 +55,7 @@
             "price": "0",
             "priceCurrency": "USD"
         },
-        "description": "Free network diagnostic tools including DNS lookup, WHOIS, SSL certificate checker, email security validation (SPF, DKIM, DMARC), IP information, and more.",
+        "description": "Free network diagnostic tools including DNS lookup, WHOIS, SSL certificate checker, email security validation (SPF, DKIM, DMARC), SMTP test, IP information, and more.",
         "url": "https://tools.jowhost.com",
         "author": {
             "@type": "Organization",
@@ -74,6 +74,7 @@
             "SPF Record Checker",
             "DKIM Record Checker",
             "DMARC Record Checker",
+            "SMTP Connection Test",
             "SSL Certificate Checker",
             "SSL Expiry Checker",
             "WHOIS Domain Lookup",
@@ -372,11 +373,16 @@
         <!-- Header Section with SEO-optimized headings -->
         <header class="header" role="banner">
             <h1>🔧 Free Network Diagnostic Tools</h1>
-            <p class="subtitle">25+ Professional DNS Lookup, WHOIS, SSL Checker & Email Security Tools - Real-time Results</p>
+            <p class="subtitle">26+ Professional DNS Lookup, WHOIS, SSL Checker, SMTP Test & Email Security Tools - Real-time Results</p>
             <div class="header-tags">
                 <span class="header-tag">⚡ Real-time Lookup</span>
                 <span class="header-tag">🛡️ Security Monitoring</span>
                 <span class="header-tag">✅ 100% Free</span>
+            </div>
+            <div style="margin-top: 1.5rem;">
+                <a href="/whois/" style="display: inline-block; padding: 0.75rem 1.5rem; background: white; color: #2563eb; border-radius: 0.5rem; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    🔍 Dedicated WHOIS Lookup Tool
+                </a>
             </div>
         </header>
 
@@ -450,6 +456,7 @@
                         <option value="dkim">DKIM Record Check - Email Auth</option>
                         <option value="dmarc">DMARC Record - Email Security</option>
                         <option value="blacklist">Email Blacklist Check</option>
+                        <option value="smtp">SMTP Test - Test Email Server</option>
                     </optgroup>
                     <optgroup label="SSL & Security">
                         <option value="ssl">SSL Certificate Info</option>
@@ -469,12 +476,67 @@
                 <input type="text" id="query-input" placeholder="Select a tool first..." aria-label="Domain or IP address input" autocomplete="off" />
                 <button type="submit" class="btn" aria-label="Run network diagnostic check">Check Now</button>
             </form>
+            
+            <!-- SMTP Test Form (Hidden by default) -->
+            <div id="smtp-form" style="display:none;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                    <div>
+                        <label for="smtp-hostname" style="display:block; margin-bottom:6px; color:var(--color-text); font-weight:600;">Hostname/Server:</label>
+                        <input type="text" id="smtp-hostname" placeholder="smtp.gmail.com" style="width:100%; padding:12px; border-radius:8px; border:2px solid var(--border-color);" />
+                    </div>
+                    <div>
+                        <label for="smtp-port" style="display:block; margin-bottom:6px; color:var(--color-text); font-weight:600;">Port:</label>
+                        <input type="number" id="smtp-port" placeholder="587" value="587" style="width:100%; padding:12px; border-radius:8px; border:2px solid var(--border-color);" />
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                    <div>
+                        <label for="smtp-secure" style="display:block; margin-bottom:6px; color:var(--color-text); font-weight:600;">Use Secured Connection:</label>
+                        <select id="smtp-secure" style="width:100%; padding:12px; border-radius:8px; border:2px solid var(--border-color);">
+                            <option value="tls">Yes (TLS)</option>
+                            <option value="ssl">Yes (SSL)</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="smtp-auth" style="display:block; margin-bottom:6px; color:var(--color-text); font-weight:600;">Use Authentication:</label>
+                        <select id="smtp-auth" onchange="toggleAuthFields()" style="width:100%; padding:12px; border-radius:8px; border:2px solid var(--border-color);">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="smtp-auth-fields">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                        <div>
+                            <label for="smtp-username" style="display:block; margin-bottom:6px; color:var(--color-text); font-weight:600;">Username:</label>
+                            <input type="text" id="smtp-username" placeholder="user@example.com" style="width:100%; padding:12px; border-radius:8px; border:2px solid var(--border-color);" />
+                        </div>
+                        <div>
+                            <label for="smtp-password" style="display:block; margin-bottom:6px; color:var(--color-text); font-weight:600;">Password:</label>
+                            <input type="password" id="smtp-password" placeholder="••••••••" style="width:100%; padding:12px; border-radius:8px; border:2px solid var(--border-color);" />
+                        </div>
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                    <div>
+                        <label for="smtp-from" style="display:block; margin-bottom:6px; color:var(--color-text); font-weight:600;">Email From:</label>
+                        <input type="email" id="smtp-from" placeholder="sender@example.com" style="width:100%; padding:12px; border-radius:8px; border:2px solid var(--border-color);" />
+                    </div>
+                    <div>
+                        <label for="smtp-to" style="display:block; margin-bottom:6px; color:var(--color-text); font-weight:600;">Email To:</label>
+                        <input type="email" id="smtp-to" placeholder="recipient@example.com" style="width:100%; padding:12px; border-radius:8px; border:2px solid var(--border-color);" />
+                    </div>
+                </div>
+                <button type="button" onclick="runSmtpTest()" class="btn" style="width:100%;">🔍 Test SMTP Connection</button>
+            </div>
+            
             <div class="result-box" id="result-box" role="region" aria-live="polite" aria-label="Tool results"></div>
         </main>
 
         <!-- Tools List Section -->
         <section class="main-tool" aria-labelledby="tools-heading">
-            <h2 id="tools-heading" class="main-tool h3">📋 25+ Free Network Diagnostic Tools</h2>
+            <h2 id="tools-heading" class="main-tool h3">📋 26+ Free Network Diagnostic Tools</h2>
             <p style="margin-bottom: 20px; color: var(--color-text-light);">Professional-grade network tools for DNS analysis, email security validation, SSL certificate checking, and domain health monitoring. All tools are free and provide real-time results.</p>
             <nav class="tools-list" aria-label="Available network tools">
                 <div class="tool-item" role="listitem">🔍 DNS A Record</div>
@@ -492,10 +554,13 @@
                 <div class="tool-item" role="listitem">📬 DMARC Check</div>
                 <div class="tool-item" role="listitem">🔒 SSL Certificate</div>
                 <div class="tool-item" role="listitem">⏰ SSL Expiry</div>
-                <div class="tool-item" role="listitem">📋 WHOIS Lookup</div>
+                <a href="/whois/" style="text-decoration: none; color: inherit;">
+                    <div class="tool-item" role="listitem" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 600;">📋 WHOIS Lookup ➜</div>
+                </a>
                 <div class="tool-item" role="listitem">🏥 Domain Health</div>
                 <div class="tool-item" role="listitem">🚫 Blacklist Check</div>
-                <div class="tool-item" role="listitem">📡 Ping Test</div>
+                <div class="tool-item" role="listitem">� SMTP Test</div>
+                <div class="tool-item" role="listitem">�📡 Ping Test</div>
                 <div class="tool-item" role="listitem">🔌 Port Check</div>
                 <div class="tool-item" role="listitem">🌍 IP Information</div>
             </nav>
@@ -537,6 +602,7 @@
                 'dkim': 'selector:example.com (e.g. default:example.com)',
                 'dmarc': 'example.com',
                 'blacklist': '8.8.8.8 or mail.example.com',
+                'smtp': 'SMTP Server Configuration',
                 'ssl': 'example.com',
                 'ssl-expiry': 'example.com',
                 'whois': 'example.com',
@@ -548,6 +614,87 @@
             
             input.placeholder = placeholders[toolType] || 'Enter domain or IP address';
             input.disabled = !toolType;
+            
+            // Toggle SMTP form visibility
+            const smtpForm = document.getElementById('smtp-form');
+            const normalInput = document.querySelector('.tool-selector');
+            if (toolType === 'smtp') {
+                normalInput.style.display = 'none';
+                smtpForm.style.display = 'block';
+            } else {
+                normalInput.style.display = 'flex';
+                smtpForm.style.display = 'none';
+            }
+        }
+
+        async function runSmtpTest() {
+            const resultBox = document.getElementById('result-box');
+            
+            const hostname = document.getElementById('smtp-hostname').value.trim();
+            const port = document.getElementById('smtp-port').value.trim();
+            const secure = document.getElementById('smtp-secure').value;
+            const auth = document.getElementById('smtp-auth').value;
+            const username = document.getElementById('smtp-username').value.trim();
+            const password = document.getElementById('smtp-password').value.trim();
+            const from = document.getElementById('smtp-from').value.trim();
+            const to = document.getElementById('smtp-to').value.trim();
+            
+            if (!hostname || !from || !to) {
+                alert('Hostname, Email From, dan Email To harus diisi!');
+                return;
+            }
+            
+            if (auth === 'yes' && (!username || !password)) {
+                alert('Username dan Password diperlukan untuk authentication!');
+                return;
+            }
+            
+            resultBox.className = 'result-box show loading';
+            resultBox.innerHTML = '<div class="spinner"></div><span>Testing SMTP connection...</span>';
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('action', 'smtp');
+                formData.append('hostname', hostname);
+                formData.append('port', port);
+                formData.append('secure', secure);
+                formData.append('auth', auth);
+                formData.append('username', username);
+                formData.append('password', password);
+                formData.append('from', from);
+                formData.append('to', to);
+                
+                const response = await fetch('api.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData.toString()
+                });
+                
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const data = await response.json();
+                
+                resultBox.className = 'result-box show';
+                if (data.success) {
+                    const resultsHTML = data.data.map(item => `
+                        <div class="result-item">
+                            <strong>${item.label}:</strong> <span>${item.value}</span>
+                        </div>
+                    `).join('');
+                    resultBox.innerHTML = `<h3>${data.title || 'SMTP Test Results'}</h3>${resultsHTML}`;
+                } else {
+                    resultBox.innerHTML = `<p class="error">❌ ${data.message || 'SMTP test failed'}</p>`;
+                }
+            } catch (error) {
+                resultBox.className = 'result-box show';
+                resultBox.innerHTML = `<p class="error">❌ Error: ${error.message || 'Connection failed'}</p>`;
+            }
+        }
+
+        function toggleAuthFields() {
+            const auth = document.getElementById('smtp-auth').value;
+            const authFields = document.getElementById('smtp-auth-fields');
+            authFields.style.display = auth === 'yes' ? 'block' : 'none';
         }
 
         async function runCheck() {
