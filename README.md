@@ -286,7 +286,7 @@ Project ini menggunakan [MIT License](LICENSE). Lihat file LICENSE untuk detail 
 
 ## 👨‍💻 Author
 
-**Fian Biasa**
+**Zulfianto**
 - GitHub: [@fianbiasa](https://github.com/fianbiasa)
 - Website: [JowHost](https://jowhost.com)
 
